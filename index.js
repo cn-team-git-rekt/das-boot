@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 
 const app = express();
@@ -7,5 +8,5 @@ app.get("/", (req,res) => {
 });
 
 app.listen(5000, ()=>{
-    console.log("App is online");
+    console.log(`App is online: ${process.env.API_KEY}`);
 });
