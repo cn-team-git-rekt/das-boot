@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/cn-team-git-rekt/das-boot#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1"
   }
