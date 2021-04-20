@@ -2,11 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const axios = require('axios');
 const app = express();
+const bodyParser = require("body-parser");
 
-let league = "39";
-let season = "2020";
-let next = "5";
-let fixture = "592816";
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.get("/", (req,res) => {
     res.status(200).json({"message": "ok"});
@@ -29,18 +28,19 @@ app.get("/api-test", (req,res)=>{
     })
 });
 
-app.get("/fixtures", (req,res)=>{
+app.post("/fixtures", (req,res)=>{
+    
     const config = {
         method: 'get',
-        url: `hhttps://v3.football.api-sports.io/fixtures?league=${league}&season=${season}&next=${next}`,
-        // qs: {league: "39", season:"2020", from: "2021-04-20", to: "2021-04-27"},
+        url: `hhttps://v3.football.api-sports.io/fixtures?league=${req.body.league}&season=${req.body.season}&next=${req.body.next}`,
+        
         headers: {
-            'x-rapidapi-host': 'v3.football.api-sports.io',
             'x-rapidapi-key': process.env.API_KEY,
         }
     }
     axios(config)
     .then((response) => {
+        console.log(response.data.response[0]);
         res.status(200).json({"message":"api-test working", "data": response.data});
     })
     .catch(function (error) {
@@ -48,13 +48,12 @@ app.get("/fixtures", (req,res)=>{
     })
 });
 
-app.get("/predictions", (req,res)=>{
+app.post("/predictions", (req,res)=>{
     const config = {
         method: 'get',
-        url: `https://v3.football.api-sports.io/predictions?fixture=${fixture}`,
+        url: `https://v3.football.api-sports.io/predictions?fixture=${req.body.fixture}`,
        
         headers: {
-            'x-rapidapi-host': 'v3.football.api-sports.io',
             'x-rapidapi-key': process.env.API_KEY,
         }
     }
