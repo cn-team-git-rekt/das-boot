@@ -3,6 +3,9 @@ const express = require("express");
 const axios = require('axios');
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -29,7 +32,7 @@ app.get("/api-test", (req,res)=>{
 });
 
 app.post("/fixtures", (req,res)=>{
-    
+    console.log(req.body)
     const config = {
         method: 'get',
         url: `hhttps://v3.football.api-sports.io/fixtures?league=${req.body.league}&season=${req.body.season}&next=${req.body.next}`,
@@ -40,7 +43,7 @@ app.post("/fixtures", (req,res)=>{
     }
     axios(config)
     .then((response) => {
-        console.log(response.data.response[0]);
+        console.log(response.data);
         res.status(200).json({"message":"api-test working", "data": response.data});
     })
     .catch(function (error) {
@@ -67,5 +70,5 @@ app.post("/predictions", (req,res)=>{
 });
 
 app.listen(5000, ()=>{
-    console.log(`App is online: ${process.env.API_KEY}`);
+    console.log(`App is online: `);
 });
