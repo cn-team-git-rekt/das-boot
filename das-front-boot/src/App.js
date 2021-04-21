@@ -6,6 +6,7 @@ import axios from "axios";
 
 function App() {
   const [data, setData] = React.useState(null);
+  const [compare, setCompare] = React.useState(null);
 
 
   React.useEffect(() => {
@@ -28,6 +29,26 @@ function App() {
   }, []);
 
 
+  
+  const getFixtId = async (id) => {
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/api-test',
+          // {fixture: id},
+          {'Content-Type': 'text/plain'}
+        );
+
+        console.log("Success: ", response);
+        setCompare(response.data.data)
+      } catch (err) {
+        console.log("error: ", err);
+      }
+      console.log(`clicked: id = ${id}.... status: ${compare.response.account.firstname}`);
+    
+  }
+  
+
+
 
 
 
@@ -37,21 +58,22 @@ function App() {
         <h1>FootyForecast</h1>
         <h2> Fixtures</h2>
         <div>{!data ? "Loading..." : data.map((item, i) => {
-          return <FixtureCard item ={item} key={item.fixture.id}/>
+          return <FixtureCard item ={item} key={item.fixture.id} clickFunction={getFixtId}
+          />
         })}</div>
       </header>
     </div>
   );
 }
 
-const FixtureCard = ({item}) => {
+const FixtureCard = (props) => {
   return(
-  <div className="fix-card">
-    <p>{item.league.name}</p>
-    <h2>{item.teams.home.name} v {item.teams.away.name}</h2>
-    <p>Venue: {item.fixture.venue.name} Fixture ID {item.fixture.id}</p>
-    <img src={item.teams.home.logo} alt="home-team-logo"/>
-    <img src={item.teams.away.logo} alt="away-team-logo"/>
+  <div className="fix-card" onClick={() => props.clickFunction(props.item.fixture.id)}>
+    <p>{props.item.league.name}</p>
+    <h2>{props.item.teams.home.name} v {props.item.teams.away.name}</h2>
+    <p>Venue: {props.item.fixture.venue.name}, Fixture ID: {props.item.fixture.id}</p>
+    <img src={props.item.teams.home.logo} alt="home-team-logo"/>
+    <img src={props.item.teams.away.logo} alt="away-team-logo"/>
   </div>
   )
 

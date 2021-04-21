@@ -14,7 +14,7 @@ app.get("/", (req,res) => {
     res.status(200).json({"message": "ok"});
 });
 
-app.get("/api-test", (req,res)=>{
+app.post("/api-test", (req,res)=>{
     const config = {
         method: 'get',
         url: 'https://v3.football.api-sports.io/status',
@@ -24,7 +24,8 @@ app.get("/api-test", (req,res)=>{
     }
     axios(config)
     .then((response) => {
-        res.status(200).json({"message":"api-test working", "data": response.data});
+        const resData = response.data;
+        res.status(200).json({"message":"api-test working", "data": resData});
     })
     .catch(function (error) {
         res.status(500).json({"message":"api-test working", "error": error});
