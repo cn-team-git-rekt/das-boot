@@ -35,16 +35,17 @@ app.post("/fixtures", (req,res)=>{
     console.log(req.body)
     const config = {
         method: 'get',
-        url: `hhttps://v3.football.api-sports.io/fixtures?league=${req.body.league}&season=${req.body.season}&next=${req.body.next}`,
+        url: `https://v3.football.api-sports.io/fixtures?league=${req.body.league}&season=${req.body.season}&next=${req.body.next}`,
         
         headers: {
-            'x-rapidapi-key': process.env.API_KEY,
+            'x-apisports-key': process.env.API_KEY,
         }
     }
     axios(config)
     .then((response) => {
-        console.log(response.data);
-        res.status(200).json({"message":"api-test working", "data": response.data});
+        const resData = response.data;
+        console.log(resData);
+        res.status(200).json({"message":"api-test working", "data": resData});
     })
     .catch(function (error) {
         res.status(500).json({"message":"api-test not  working", "error": error});
