@@ -58,12 +58,14 @@ app.post("/predictions", (req,res)=>{
         url: `https://v3.football.api-sports.io/predictions?fixture=${req.body.fixture}`,
        
         headers: {
-            'x-rapidapi-key': process.env.API_KEY,
+            'x-apisports-key': process.env.API_KEY,
         }
     }
     axios(config)
     .then((response) => {
-        res.status(200).json({"message":"api-test working", "data": response.data});
+        const resData = response.data;
+        console.log(resData);
+        res.status(200).json({"message":"api-test working", "data": resData});
     })
     .catch(function (error) {
         res.status(500).json({"message":"api-test not  working", "error": error});
