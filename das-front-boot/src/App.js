@@ -15,7 +15,7 @@ function App() {
       try {
         const response = await axios.post(
           'http://localhost:5000/fixtures',
-          { league: 41, season: 2020, next: 10 },
+          { league: 40, season: 2020, next: 15 },
           { 'Content-Type': 'text/plain' }
         );
 
@@ -49,7 +49,7 @@ function App() {
   }
 
   const backButton = () => {
-    setData(null);
+    setCompare(null);
     console.log("clicked")
   }
 
@@ -69,7 +69,7 @@ function App() {
        {!compare ? <h2> Fixtures</h2> : <h2>Comparison</h2>}
         <div>
           {compare ? compare.map((item, i) => {
-            return <ComparePage item={item} key={i} />
+            return <ComparePage item={item} key={i} clickFunc={backButton}/>
           }
           ) : null}
         </div>
@@ -85,11 +85,14 @@ function App() {
 const FixtureCard = (props) => {
   return (
     <div className="fix-card" onClick={() => props.clickFunction(props.item.fixture.id)}>
-      <p>{props.item.league.name}</p>
-      <h2>{props.item.teams.home.name} v {props.item.teams.away.name}</h2>
-      <p>Venue: {props.item.fixture.venue.name}, Fixture ID: {props.item.fixture.id}</p>
-      <img src={props.item.teams.home.logo} alt="home-team-logo" />
-      <img src={props.item.teams.away.logo} alt="away-team-logo" />
+      <img className="card-league-img" src={props.item.league.logo} alt="league-logo" />
+      <div className="fix-card-head">
+      <img className="card-img" src={props.item.teams.home.logo} alt="home-team-logo" />
+      
+      <h2 className="fix-card-game">{props.item.teams.home.name} v {props.item.teams.away.name}</h2>
+      <img className="card-img" src={props.item.teams.away.logo} alt="away-team-logo" />
+      </div>
+      <p className="fix-card-venue">{props.item.fixture.venue.name}</p>
     </div>
   )
 
@@ -99,7 +102,7 @@ const FixtureCard = (props) => {
 const ComparePage = (props) => {
   return(
   <div>
-    <button>Back</button>
+    <button onClick={()=> {props.clickFunc()}}>Back</button>
     <img src={props.item.teams.home.logo} alt="home-team-logo"/>
     <img src={props.item.teams.away.logo} alt="away-team-logo"/>
     <h2>{props.item.teams.home.name} v {props.item.teams.away.name}</h2>
@@ -120,5 +123,3 @@ const ComparePage = (props) => {
 }
 
 export default App;
-//
-/* <li key={i}></li> */
