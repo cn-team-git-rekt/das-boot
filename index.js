@@ -65,7 +65,7 @@ app.post("/predictions", (req,res)=>{
     axios(config)
     .then((response) => {
         const resData = response.data;
-        console.log(resData);
+        console.log(resData.response);
         res.status(200).json({"message":"api-test working", "data": resData});
     })
     .catch(function (error) {
