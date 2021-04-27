@@ -81,13 +81,19 @@
 }
 
 .comp-img-logo {
-  height: 100px;
+  height: 80px;
   padding-left: 15px;
   padding-right: 15px;
 }
  .compare-game {
    padding-top: 20px;
    padding-bottom: 20px;
+ }
+
+ .comp-body {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
  }
 
 
