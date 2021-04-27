@@ -2,10 +2,12 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import axios from "axios";
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactApexChart from 'react-apexcharts';
+import { evaluate } from 'mathjs';
 
 
 
@@ -56,21 +58,21 @@ function App() {
 
   const backButton = () => {
     setCompare(null);
-    
+
   }
 
   const getLeagues = (i) => {
-   
+
     setLeagues(parseInt(i));
   }
 
   return (
     <div className="App">
       <header className="App-header">
-      <TopNav changeFunc={getLeagues}/>
+        <TopNav changeFunc={getLeagues} />
       </header>
       <body className="body">
-      <div>
+        <div>
           {!compare ? <h2> Fixtures</h2> : <h2>Comparison</h2>}
         </div>
         <div>
@@ -149,22 +151,93 @@ const ComparePage = (props) => {
         <img className="comp-img-logo" src={props.item.teams.home.logo} alt="home-team-logo" />
         <img className="comp-img-logo" src={props.item.teams.away.logo} alt="away-team-logo" />
       </div>
-      <h1 className="compare-game">{props.item.teams.home.name} v {props.item.teams.away.name}</h1>
-      <h2>{props.item.comparison.poisson_distribution.home} Probability {props.item.comparison.poisson_distribution.away}</h2>
+      <div className="comp-body">
+        <h1 className="compare-game">{props.item.teams.home.name} v {props.item.teams.away.name}</h1>
+        <ApexChart props={props} />
+        <h2>{props.item.comparison.poisson_distribution.home} Probability {props.item.comparison.poisson_distribution.away}</h2>
 
-      <h2>{props.item.teams.home.league.goals.for.average.home} Goal Expectency {props.item.teams.away.league.goals.for.average.away}</h2>
-      <h2>H2H Strengths</h2>
+        <h2>{props.item.teams.home.league.goals.for.average.home} Goal Expectency {props.item.teams.away.league.goals.for.average.away}</h2>
+        <h2>H2H Strengths</h2>
 
-      <h2>{props.item.comparison.att.home} Attacking {props.item.comparison.att.away}</h2>
+        <h2>{props.item.comparison.att.home} Attacking {props.item.comparison.att.away}</h2>
 
-      <h2>{props.item.comparison.def.home} Defensive {props.item.comparison.def.away}</h2>
+        <h2>{props.item.comparison.def.home} Defensive {props.item.comparison.def.away}</h2>
 
-      <h2>{props.item.comparison.goals.home} Goals   {props.item.comparison.goals.away}</h2>
+        <h2>{props.item.comparison.goals.home} Goals   {props.item.comparison.goals.away}</h2>
 
-      <h2>{props.item.comparison.form.home}  Form    {props.item.comparison.form.away}</h2>
-      <button onClick={() => { props.clickFunc() }}>Back</button>
+        <h2>{props.item.comparison.form.home}  Form    {props.item.comparison.form.away}</h2>
+        <button onClick={() => { props.clickFunc() }}>Back</button>
+      </div>
     </div>
   )
 }
+
+class ApexChart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.updateCharts = this.updateCharts.bind(this);
+
+    this.state = {
+
+      series: [36, 64],
+      options: {
+        chart: {
+          type: 'donut',
+        },
+        labels: ['Home Team', 'Away Team'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 250
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+      },
+
+
+    };
+  }
+
+  updateCharts = (c) => {
+    const newProb = [];
+    c.map((item) => {
+      let a = evaluate(`${item.comparison.poisson_distribution.home}100`);
+      newProb.push(parseInt(a));
+      let b = evaluate(`${item.comparison.poisson_distribution.away}100`);
+      newProb.push(parseInt(b));
+      return newProb;
+    })
+
+    this.setState({
+      series: newProb,
+    });
+
+
+  }
+
+
+
+  render() {
+    return (
+
+
+      <div id="chart">
+        <ReactApexChart options={this.state.options} series={this.state.series} type="donut" />
+      </div>
+
+
+    );
+  }
+}
+
+
+
+
+
 
 export default App;
