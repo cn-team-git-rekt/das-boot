@@ -66,18 +66,6 @@ function App() {
     setLeagues(parseInt(i));
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="App">
       <header className="App-header">
@@ -159,7 +147,6 @@ const TopNav = (props) => {
 const ComparePage = (props) => {
   return (
     <div>
-
       <div className="comp-head">
         <img className="comp-img-logo" src={props.item.teams.home.logo} alt="home-team-logo" />
         <img className="comp-img-logo" src={props.item.teams.away.logo} alt="away-team-logo" />
