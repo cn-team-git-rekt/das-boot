@@ -106,3 +106,18 @@
  }
 
 
+ #chart {
+  height: 25%;
+  width: 20rem;
+  align-self: center;
+ }
+
+ .back-button{
+  width: 25%;
+  align-self: center;
+  height: 10%;
+  margin: 2vh;  
+  border-radius: 10px;
+  font-size: 25px;
+  margin-bottom: 10%;
+ }
